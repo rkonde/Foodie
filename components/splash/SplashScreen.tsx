@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { Image, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
