@@ -1,4 +1,5 @@
 import { RecipePreview } from "@/types/RecipePreview";
+import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { Pressable, Text, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -10,6 +11,8 @@ type RecipesProps = {
 };
 
 const Recipes = ({ recipes }: RecipesProps) => {
+  const navigation = useNavigation();
+
   return (
     <View className="m-4 gap-3">
       <Text
@@ -31,7 +34,12 @@ const Recipes = ({ recipes }: RecipesProps) => {
                 .damping(12)}
               className={"w-[46%] gap-2 m-2 rounded-lg"}
             >
-              <Pressable className="w-ful">
+              <Pressable
+                className="w-ful"
+                onPress={() => {
+                  navigation.navigate("Recipe", recipe);
+                }}
+              >
                 <Image
                   source={{ uri: recipe.strMealThumb }}
                   style={{ width: "100%", height: hp(25), borderRadius: 24 }}
