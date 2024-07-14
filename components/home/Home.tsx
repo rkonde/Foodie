@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
 import { Category } from "@/types/Category";
 import axios from "axios";
@@ -11,6 +11,7 @@ import Recipes from "../ui/Recipes";
 
 const Home = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [searchName, setSearchName] = useState("");
   const [activeCategory, setActiveCategory] = useState("");
   const [recipes, setRecipes] = useState([]);
 
@@ -26,6 +27,7 @@ const Home = () => {
   }, [categories]);
 
   const handleCategoryChange = (category: string) => {
+    setSearchName("");
     setActiveCategory(category);
     setRecipes([]);
     fetchRecipes(category);
@@ -52,6 +54,21 @@ const Home = () => {
       );
 
       if (response && response.data) {
+        setRecipes(response.data.meals);
+      }
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
+
+  const fetchRecipesByName = async (name: string) => {
+    try {
+      const response = await axios.get(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`
+      );
+
+      if (response && response.data) {
+        setActiveCategory("");
         setRecipes(response.data.meals);
       }
     } catch (error) {
@@ -94,10 +111,15 @@ const Home = () => {
             placeholderTextColor={"gray"}
             style={{ fontSize: hp(1.7) }}
             className="flex-1 text-base mb-1 pl-3 tracking-wider"
+            value={searchName}
+            onChangeText={(value) => setSearchName(value)}
           />
-          <View className="bg-white rounded-full p-3">
+          <Pressable
+            onPress={() => fetchRecipesByName(searchName)}
+            className="bg-white rounded-full p-3"
+          >
             <MagnifyingGlassIcon size={hp(2.5)} color="gray" strokeWidth={3} />
-          </View>
+          </Pressable>
         </View>
 
         {categories.length > 0 && (

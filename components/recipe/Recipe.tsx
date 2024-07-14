@@ -2,7 +2,6 @@ import { RootStackScreenProps } from "@/navigation/types";
 import { RecipeDetails } from "@/types/RecipeDetails";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
-import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -13,17 +12,16 @@ import {
 } from "react-native-responsive-screen";
 import Loading from "../ui/Loading";
 
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 const Recipe = () => {
   const navigation = useNavigation();
   const {
-    params: { idMeal, strMealThumb },
+    params: { idMeal, strMeal, strMealThumb },
   } = useRoute<RootStackScreenProps<"Recipe">["route"]>();
 
   const [recipe, setRecipe] = useState<RecipeDetails>();
-
-  console.log(idMeal);
 
   useEffect(() => {
     fetchRecipeData(idMeal);
@@ -40,8 +38,6 @@ const Recipe = () => {
         });
       }
     }
-
-    console.log(ingredients);
 
     return ingredients;
   };
@@ -72,7 +68,8 @@ const Recipe = () => {
     >
       <StatusBar style="light" />
       <View className="flex-row justify-center mt-8">
-        <Image
+        <Animated.Image
+          sharedTransitionTag={strMeal}
           source={{ uri: strMealThumb }}
           style={{
             width: wp(98),
@@ -82,19 +79,25 @@ const Recipe = () => {
         />
       </View>
 
-      <View className="w-full absolute flex-row justify-between items-center top-14">
+      <Animated.View
+        entering={FadeIn.delay(200).duration(600)}
+        className="w-full absolute flex-row justify-between items-center top-14"
+      >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           className="p-2 rounded-full ml-5 bg-white"
         >
           <ChevronLeftIcon size={hp(3.5)} color={"#fbbf24"} strokeWidth={4.5} />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
 
       {recipe === undefined ? (
         <Loading />
       ) : (
-        <View className="px-4 flex justify-between gap-4 pt-8">
+        <Animated.View
+          entering={FadeInDown.springify().damping(12).duration(600)}
+          className="px-4 flex justify-between gap-4 pt-8"
+        >
           <View className="gap-2">
             <Text
               className="font-bold flex-1 text-neutral-700"
@@ -189,7 +192,7 @@ const Recipe = () => {
               </View>
             </View>
           )}
-        </View>
+        </Animated.View>
       )}
     </ScrollView>
   );

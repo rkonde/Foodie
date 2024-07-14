@@ -1,6 +1,5 @@
 import { RecipePreview } from "@/types/RecipePreview";
 import { useNavigation } from "@react-navigation/native";
-import { Image } from "expo-image";
 import { Pressable, Text, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -40,7 +39,8 @@ const Recipes = ({ recipes }: RecipesProps) => {
                   navigation.navigate("Recipe", recipe);
                 }}
               >
-                <Image
+                <Animated.Image
+                  sharedTransitionTag={recipe.strMeal}
                   source={{ uri: recipe.strMealThumb }}
                   style={{ width: "100%", height: hp(25), borderRadius: 24 }}
                 />
