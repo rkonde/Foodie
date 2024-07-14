@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Pressable, Text, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import Loading from "./Loading";
+import Loading from "../../ui/Loading";
 
 type RecipesProps = {
   recipes: RecipePreview[];

@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
+import Categories from "@/components/home/ui/Categories";
 import Header from "@/components/home/ui/Header";
+import Recipes from "@/components/home/ui/Recipes";
 import SearchBar from "@/components/home/ui/SearchBar";
-import Categories from "@/components/ui/Categories";
-import Recipes from "@/components/ui/Recipes";
 import {
   fetchCategories,
   fetchRecipes,
