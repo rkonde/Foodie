@@ -1,13 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-
-import { Category } from "@/types/Category";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { MagnifyingGlassIcon } from "react-native-heroicons/solid";
+import { ScrollView, View } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import Categories from "../ui/Categories";
-import Recipes from "../ui/Recipes";
+
+import Header from "@/components/home/ui/Header";
+import SearchBar from "@/components/home/ui/SearchBar";
+import Categories from "@/components/ui/Categories";
+import Recipes from "@/components/ui/Recipes";
+import {
+  fetchCategories,
+  fetchRecipes,
+  fetchRecipesByName,
+} from "@/services/RecipesService";
+import { Category } from "@/types/Category";
 
 const Home = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -16,13 +21,13 @@ const Home = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetchCategories();
+    loadCategories();
   }, []);
 
   useEffect(() => {
     if (categories.length > 0) {
       setActiveCategory(categories[0].strCategory);
-      fetchRecipes(categories[0].strCategory);
+      loadRecipes(categories[0].strCategory);
     }
   }, [categories]);
 
@@ -30,50 +35,20 @@ const Home = () => {
     setSearchName("");
     setActiveCategory(category);
     setRecipes([]);
-    fetchRecipes(category);
+    loadRecipes(category);
   };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get(
-        "https://www.themealdb.com/api/json/v1/1/categories.php"
-      );
-
-      if (response && response.data) {
-        setCategories(response.data.categories);
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
+  const loadCategories = async () => {
+    setCategories(await fetchCategories());
   };
 
-  const fetchRecipes = async (activeCategory: string) => {
-    try {
-      const response = await axios.get(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${activeCategory}`
-      );
-
-      if (response && response.data) {
-        setRecipes(response.data.meals);
-      }
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    }
+  const loadRecipes = async (activeCategory: string) => {
+    setRecipes(await fetchRecipes(activeCategory));
   };
 
-  const fetchRecipesByName = async (name: string) => {
-    try {
-      const response = await axios.get(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`
-      );
-
-      if (response && response.data) {
-        setActiveCategory("");
-        setRecipes(response.data.meals);
-      }
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    }
+  const loadRecipesByName = async (name: string) => {
+    setActiveCategory("");
+    setRecipes(await fetchRecipesByName(name));
   };
 
   return (
@@ -85,42 +60,13 @@ const Home = () => {
         contentContainerClassName="gap-4"
         className="pt-14"
       >
-        <View className="mx-4 gap-2 mb-2">
-          <Text style={{ fontSize: hp(1.7) }} className="text-neutral-600">
-            Hello Foodie!
-          </Text>
-          <View>
-            <Text
-              style={{ fontSize: hp(3.8) }}
-              className="font-semibold text-neutral-600"
-            >
-              Make your own food,
-            </Text>
-          </View>
-          <Text
-            style={{ fontSize: hp(3.8) }}
-            className="font-semibold text-neutral-600"
-          >
-            stay at <Text className="text-amber-400">home</Text>
-          </Text>
-        </View>
+        <Header />
 
-        <View className="mx-4 flex-row items-center rounded-full bg-black/5 p-[6px] my-2">
-          <TextInput
-            placeholder="Serach any recipe"
-            placeholderTextColor={"gray"}
-            style={{ fontSize: hp(1.7) }}
-            className="flex-1 text-base mb-1 pl-3 tracking-wider"
-            value={searchName}
-            onChangeText={(value) => setSearchName(value)}
-          />
-          <Pressable
-            onPress={() => fetchRecipesByName(searchName)}
-            className="bg-white rounded-full p-3"
-          >
-            <MagnifyingGlassIcon size={hp(2.5)} color="gray" strokeWidth={3} />
-          </Pressable>
-        </View>
+        <SearchBar
+          value={searchName}
+          onChange={setSearchName}
+          onSearch={() => loadRecipesByName(searchName)}
+        />
 
         {categories.length > 0 && (
           <Categories
