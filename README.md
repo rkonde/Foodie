@@ -1,4 +1,4 @@
-# Chatty
+# Foodie
 
 Foodie is a React Native application that allows users to search for and display recipes with categorization.
 It uses the Meal DB API to fetch recipe data and includes YouTube videos to demonstrate the preparation of the recipes.
@@ -17,9 +17,11 @@ It uses the Meal DB API to fetch recipe data and includes YouTube videos to demo
    <br />
 
    <h2>Recipe screen</h2>
-   <img src="./screenshots/recipe_1.png" width="270" height="585" />
-   <img src="./screenshots/recipe_2.png" width="270" height="585" />
-   <img src="./screenshots/recipe_3.png" width="270" height="585" />
+   <div style="display: flex; gap: 4px">
+      <img src="./screenshots/recipe_1.png" width="270" height="585" />
+      <img src="./screenshots/recipe_2.png" width="270" height="585" />
+      <img src="./screenshots/recipe_3.png" width="270" height="585" />
+   </div>
 </p>
 
 ## Features
