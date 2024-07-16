@@ -1,22 +1,22 @@
-import { RootStackScreenProps } from "@/navigation/types";
-import { RecipeDetails } from "@/types/RecipeDetails";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import Loading from "../ui/Loading";
 
+import BackButton from "@/components/recipe/ui/BackButton";
+import Header from "@/components/recipe/ui/Header";
+import Ingredients from "@/components/recipe/ui/Ingredients";
+import Steps from "@/components/recipe/ui/Stepts";
+import Video from "@/components/recipe/ui/Video";
+import Loading from "@/components/ui/Loading";
+import { RootStackScreenProps } from "@/navigation/types";
 import { fetchRecipeDetails } from "@/services/RecipesService";
-import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
-import BackButton from "./ui/BackButton";
-import Header from "./ui/Header";
-import Ingredients from "./ui/Ingredients";
-import Steps from "./ui/Stepts";
-import Video from "./ui/Video";
+import { RecipeDetails } from "@/types/RecipeDetails";
 
 const Recipe = () => {
   const navigation = useNavigation();

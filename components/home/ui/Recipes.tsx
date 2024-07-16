@@ -1,9 +1,10 @@
-import { RecipePreview } from "@/types/RecipePreview";
 import { useNavigation } from "@react-navigation/native";
 import { Pressable, Text, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import Loading from "../../ui/Loading";
+
+import Loading from "@/components/ui/Loading";
+import { RecipePreview } from "@/types/RecipePreview";
 
 type RecipesProps = {
   recipes: RecipePreview[];

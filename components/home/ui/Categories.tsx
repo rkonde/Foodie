@@ -1,8 +1,9 @@
-import { Category } from "@/types/Category";
 import { Image } from "expo-image";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+
+import { Category } from "@/types/Category";
 
 type CategoriesProps = {
   categories: Category[];
