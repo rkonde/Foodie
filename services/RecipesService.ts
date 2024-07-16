@@ -43,3 +43,16 @@ export const fetchRecipesByName = async (name: string) => {
     return [];
   }
 };
+
+export const fetchRecipeDetails = async (idMeal: string) => {
+  try {
+    const { data } = await axios.get(
+      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`
+    );
+
+    return data.meals[0];
+  } catch (error) {
+    console.error("Error fetching recipe data:", error);
+    return undefined;
+  }
+};
